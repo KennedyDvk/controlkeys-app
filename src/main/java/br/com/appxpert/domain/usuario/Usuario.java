@@ -20,6 +20,8 @@ public class Usuario {
 
     private String nome;
 
+    private String sobreNome;
+
     private String telefone;
 
     private String cpf;
@@ -30,30 +32,12 @@ public class Usuario {
 
     public Usuario(DadosCadastroUsuario dados) {
         this.nome = dados.nome();
+        this.sobreNome = dados.sobreNome();
         this.telefone = dados.telefone();
         this.cpf = dados.cpf();
         this.setor = dados.setor();
         this.funcao = dados.funcao();
     }
-
-//    public void setNome(String nome) {
-//        this.nome = capitalize(nome);
-//    }
-//
-//    private String capitalize(String str) {
-//
-//        if (str == null || str.isEmpty()) {
-//            return str;
-//        }
-//        return str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
-//    }
-
-//    public static void main(String[] args) {
-//        Usuario usuario = new Usuario();
-//        usuario.setNome("KENNEDY");  // Definindo o nome todo em maiúsculas
-//        System.out.println(usuario.getNome());  // Deve imprimir "Kennedy"
-//    }
-
 
 }
 

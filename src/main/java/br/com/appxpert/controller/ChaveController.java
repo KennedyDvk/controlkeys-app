@@ -58,7 +58,7 @@ public class ChaveController {
         var optionalChave = repository.findById(id);
 
         if (optionalChave.isPresent()) {
-            repository.deleteById(id); // Remove a entidade do MongoDB
+            repository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

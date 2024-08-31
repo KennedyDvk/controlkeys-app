@@ -33,16 +33,17 @@ public class UsuarioController {
     }
 
     /**
-     * Endpoint para buscar usuários pelo nome.
+     * Endpoint para buscar usuários pelo nome ou sobrenome.
      * Aceita um parâmetro de consulta `nome` que pode ser passado em maiúsculas ou minúsculas.
-     * A busca é realizada ignorando o caso das letras.
+     * A busca é realizada ignorando o caso das letras e procura tanto no campo de nome quanto no de sobrenome.
      *
      * Exemplo de uso:
      * GET /buscar?nome=kennedy
+     * GET /buscar?nome=silva
      *
-     * @param nome O nome do usuário a ser buscado. Pode ser em maiúsculas ou minúsculas.
+     * @param nome O nome ou sobrenome do usuário a ser buscado. Pode ser em maiúsculas ou minúsculas.
      * @param paginacao Informações sobre a página e a ordenação dos resultados.
-     * @return Uma página de usuários que correspondem ao nome fornecido.
+     * @return Uma página de usuários que correspondem ao nome ou sobrenome fornecido.
      */
     @GetMapping("/buscar")
     public ResponseEntity<Page<DadosListagemUsuario>> buscarPorNome(@RequestParam String nome, @PageableDefault (size = 10, sort = "nome")Pageable paginacao) {
