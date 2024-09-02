@@ -39,6 +39,28 @@ public class Usuario {
         this.funcao = dados.funcao();
     }
 
+    public void atualizarInformacoes(DadosAtualizacaoUsuario dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.sobreNome() != null) {
+            this.sobreNome = dados.sobreNome();
+        }
+        if (dados.telefone() != null) {
+            this.telefone = dados.telefone();
+        }
+        if (dados.cpf() != null) {
+            this.cpf = dados.cpf();
+        }
+        if (dados.setor() != null) {
+            this.setor = dados.setor();
+        }
+        if (dados.funcao() != null) {
+            this.funcao = dados.funcao();
+        }
+
+    }
+
 }
 
 

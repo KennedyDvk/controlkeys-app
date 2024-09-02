@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -50,5 +51,43 @@ public class UsuarioController {
         var page = repository.findByNomeIgnoreCase(nome, paginacao).map(DadosListagemUsuario::new);
 
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/setor")
+    public ResponseEntity<Page<DadosListagemUsuario>> buscarPorSetor(@RequestParam String setor, @PageableDefault(size = 10, sort = "setor") Pageable paginacao) {
+        var page = repository.findBySetorIgnoreCase(setor, paginacao).map(DadosListagemUsuario::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/funcao")
+    public ResponseEntity<Page<DadosListagemUsuario>> buscarPorFuncao(@RequestParam String funcao, @PageableDefault(size = 10, sort = "funcao") Pageable paginacao) {
+        var page = repository.findByFuncaoIgnoreCase(funcao, paginacao).map(DadosListagemUsuario::new);
+        return ResponseEntity.ok(page);
+    }
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody DadosAtualizacaoUsuario dados) {
+        var usuarioOptional = repository.findById(dados.id());
+        if (usuarioOptional.isPresent()) {
+            var usuario = usuarioOptional.get();
+            usuario.atualizarInformacoes(dados);
+            repository.save(usuario);
+            return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> excluir(@PathVariable String id) {
+        var usuarioOptional = repository.findById(id);
+
+        if (usuarioOptional.isPresent()) {
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
