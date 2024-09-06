@@ -19,6 +19,4 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 
     @Query("{ 'funcao': { $regex: ?0, $options: 'i' } }")
     Page<Usuario>findByFuncaoIgnoreCase(String setor, Pageable paginacao);
-
-//    List<Usuario> buscarporSetorOuFuncao(String setor, String funcao);
 }

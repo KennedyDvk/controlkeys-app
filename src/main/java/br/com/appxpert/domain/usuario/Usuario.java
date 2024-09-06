@@ -22,21 +22,21 @@ public class Usuario {
 
     private String sobreNome;
 
-    private String telefone;
-
     private String cpf;
 
-    private String setor;
+    private String telefone;
 
     private String funcao;
+
+    private String setor;
 
     public Usuario(DadosCadastroUsuario dados) {
         this.nome = dados.nome();
         this.sobreNome = dados.sobreNome();
-        this.telefone = dados.telefone();
         this.cpf = dados.cpf();
-        this.setor = dados.setor();
+        this.telefone = dados.telefone();
         this.funcao = dados.funcao();
+        this.setor = dados.setor();
     }
 
     public void atualizarInformacoes(DadosAtualizacaoUsuario dados) {
@@ -46,17 +46,21 @@ public class Usuario {
         if (dados.sobreNome() != null) {
             this.sobreNome = dados.sobreNome();
         }
-        if (dados.telefone() != null) {
-            this.telefone = dados.telefone();
-        }
+
         if (dados.cpf() != null) {
             this.cpf = dados.cpf();
         }
-        if (dados.setor() != null) {
-            this.setor = dados.setor();
+
+        if (dados.telefone() != null) {
+            this.telefone = dados.telefone();
         }
+
         if (dados.funcao() != null) {
             this.funcao = dados.funcao();
+        }
+
+        if (dados.setor() != null) {
+            this.setor = dados.setor();
         }
 
     }

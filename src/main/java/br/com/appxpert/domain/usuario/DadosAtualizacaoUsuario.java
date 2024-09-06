@@ -4,24 +4,27 @@ public record DadosAtualizacaoUsuario(
         String id,
         String nome,
         String sobreNome,
-        String telefone,
         String cpf,
-        String setor,
-        String funcao
+        String telefone,
+        String funcao,
+        String setor
 ) {
 
     public DadosAtualizacaoUsuario {
         if (nome != null) {
             nome = capitalize(nome);
         }
+
         if (sobreNome != null) {
             sobreNome = capitalize(sobreNome);
         }
-        if (setor != null) {
-            setor = capitalize(setor);
-        }
+
         if (funcao != null) {
             funcao = capitalize(funcao);
+        }
+
+        if (setor != null) {
+            setor = capitalize(setor);
         }
     }
 
