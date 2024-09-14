@@ -1,5 +1,6 @@
 package br.com.appxpert.domain.chave;
 
+import br.com.appxpert.domain.usuario.Usuario;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

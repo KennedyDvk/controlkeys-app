@@ -1,5 +1,6 @@
 package br.com.appxpert.domain.usuario;
 
+import br.com.appxpert.domain.chave.Chave;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;

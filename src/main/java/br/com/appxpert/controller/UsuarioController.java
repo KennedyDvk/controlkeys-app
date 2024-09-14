@@ -64,7 +64,8 @@ public class UsuarioController {
         var page = repository.findByFuncaoIgnoreCase(funcao, paginacao).map(DadosListagemUsuario::new);
         return ResponseEntity.ok(page);
     }
-    @PutMapping
+
+    @PutMapping("/{id}")
     @Transactional
     public ResponseEntity atualizar(@RequestBody DadosAtualizacaoUsuario dados) {
         var usuarioOptional = repository.findById(dados.id());

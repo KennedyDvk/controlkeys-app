@@ -1,4 +1,4 @@
-package br.com.appxpert.service;
+package br.com.appxpert.service.usuario;
 
 import br.com.appxpert.domain.usuario.Usuario;
 import br.com.appxpert.domain.usuario.UsuarioRepository;
