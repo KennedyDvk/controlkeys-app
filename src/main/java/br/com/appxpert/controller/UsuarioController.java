@@ -1,6 +1,8 @@
 package br.com.appxpert.controller;
 
+import br.com.appxpert.domain.chave.Chave;
 import br.com.appxpert.domain.usuario.*;
+import br.com.appxpert.service.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private UsuarioService service;
+
     @PostMapping
     public ResponseEntity cadastrar (@RequestBody DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder) {
         var usuario = new Usuario(dados);
@@ -24,6 +29,21 @@ public class UsuarioController {
         var uri = uriBuilder.path("/usuario/{id}").buildAndExpand(usuario.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
+    }
+
+    @PostMapping("/chaves")
+    public Chave createChave(@RequestBody Chave chave) {
+        return service.saveChave(chave);
+    }
+
+    @PostMapping("/{usuarioId}/chaves/{chaveId}")
+    public void associarChave(@PathVariable String usuarioId, @PathVariable String chaveId) {
+        service.associarChaveAoUsuario(usuarioId, chaveId);
+    }
+
+    @PostMapping("/{usuarioId}/chaves/{chaveId}/devolver")
+    public void devolverChave(@PathVariable String usuarioId, @PathVariable String chaveId) {
+        service.devolverChave(usuarioId, chaveId);
     }
 
     @GetMapping

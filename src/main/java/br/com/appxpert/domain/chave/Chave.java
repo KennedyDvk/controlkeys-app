@@ -17,11 +17,13 @@ public class Chave {
     private String nome;
     private String numero;
     private String descricao;
+    private boolean disponivel;
 
     public Chave(DadosCadastroChave dados) {
         this.nome = dados.nome();
         this.numero = dados.numero();
         this.descricao = dados.descricao();
+        this.disponivel = true;
     }
 
     public void atualizarInformacoes(DadosAtualizacaoChave dados) {
@@ -34,5 +36,22 @@ public class Chave {
         if (dados.descricao() != null) {
             this.descricao = dados.descricao();
         }
+
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public void marcarComoIndisponivel() {
+        this.disponivel = false;
+    }
+
+    public void marcarComoDisponivel() {
+        this.disponivel = true;
     }
 }
