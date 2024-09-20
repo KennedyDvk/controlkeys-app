@@ -1,9 +1,12 @@
 package br.com.appxpert.domain.chave;
 
 import br.com.appxpert.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 
 @Document(collection = "chave")
 @Getter
@@ -18,6 +21,13 @@ public class Chave {
     private String numero;
     private String descricao;
     private boolean disponivel;
+    private Usuario usuario;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime dataRetirada;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime dataDevolucao;
 
     public Chave(DadosCadastroChave dados) {
         this.nome = dados.nome();

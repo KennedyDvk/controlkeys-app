@@ -17,7 +17,7 @@ public record DadosDetalhamentoUsuario(
         List<DadosDetalhamentoChave> chaves) {
 
     public DadosDetalhamentoUsuario(Usuario usuario) {
-        this(usuario.getId(), usuario.getNome(), usuario.getSobreNome(), usuario.getCpf(), usuario.getTelefone(), usuario.getSetor(), usuario.getFuncao(), usuario.getChaves().stream().map(DadosDetalhamentoChave::new).collect(Collectors.toList()));
+        this(usuario.getId(), usuario.getNome(), usuario.getSobreNome(), usuario.getCpf(), usuario.getTelefone(), usuario.getSetor(), usuario.getFuncao(), usuario.getChaves() != null ? usuario.getChaves().stream().map(DadosDetalhamentoChave::new).toList() : null);
 
     }
 }

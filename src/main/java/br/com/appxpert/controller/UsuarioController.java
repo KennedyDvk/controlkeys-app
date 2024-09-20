@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("usuario")
 public class UsuarioController {
@@ -38,13 +40,20 @@ public class UsuarioController {
 
     @PostMapping("/{usuarioId}/chaves/{chaveId}")
     public void associarChave(@PathVariable String usuarioId, @PathVariable String chaveId) {
-        service.associarChaveAoUsuario(usuarioId, chaveId);
+        LocalDateTime dataRetirada = LocalDateTime.now(); // Obtém a data e hora atuais
+        service.associarChaveAoUsuario(usuarioId, chaveId, dataRetirada);
     }
 
-    @PostMapping("/{usuarioId}/chaves/{chaveId}/devolver")
+
+
+    @PatchMapping("/{usuarioId}/chaves/{chaveId}/devolver")
     public void devolverChave(@PathVariable String usuarioId, @PathVariable String chaveId) {
-        service.devolverChave(usuarioId, chaveId);
+        LocalDateTime dataDevolucao = LocalDateTime.now(); // Obtém a data e hora atuais
+        service.devolverChave(usuarioId, chaveId, dataDevolucao);
     }
+
+
+
 
     @GetMapping
     public ResponseEntity<Page<DadosListagemUsuario>> listar(@PageableDefault(size = 10, sort = {"nome"})Pageable paginacao) {

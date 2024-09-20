@@ -1,6 +1,7 @@
 package br.com.appxpert.controller;
 
 import br.com.appxpert.domain.chave.*;
+import br.com.appxpert.service.chave.ChaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ public class ChaveController {
     @Autowired
     private ChaveRepository repository;
 
+    @Autowired
+    private ChaveService chaveService;
+
     @PostMapping
     public ResponseEntity cadastrar (@RequestBody DadosCadastroChave dados, UriComponentsBuilder uriBuider) {
         var chave = new Chave(dados);
@@ -27,9 +31,8 @@ public class ChaveController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemChave>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        var page = repository.findAll(paginacao).map(DadosListagemChave::new);
-        return ResponseEntity.ok(page);
+    public Page<DadosListagemChave> listarChaves(Pageable paginacao) {
+        return chaveService.listarChaves(paginacao);
     }
 
     @GetMapping("/nome/{nome}")
