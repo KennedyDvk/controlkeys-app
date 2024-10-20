@@ -2,6 +2,8 @@ package br.com.appxpert.service.usuario;
 
 import br.com.appxpert.domain.chave.Chave;
 import br.com.appxpert.domain.chave.ChaveRepository;
+import br.com.appxpert.domain.movimentacao.MovimentacaoChave;
+import br.com.appxpert.domain.movimentacao.MovimentacaoChaveRepository;
 import br.com.appxpert.domain.usuario.Usuario;
 import br.com.appxpert.domain.usuario.UsuarioRepository;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -23,6 +26,9 @@ public class UsuarioService {
 
     @Autowired
     private ChaveRepository chaveRepository;
+
+    @Autowired
+    private MovimentacaoChaveRepository movimentacaoChaveRepository;
 
     public Usuario saveUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
@@ -42,18 +48,24 @@ public class UsuarioService {
 
             if (chave.isDisponivel()) {
                 chave.setDisponivel(false);
-                chave.setUsuario(usuario); // Definindo o usuário associado
-                chave.setDataRetirada(dataRetirada); // Definindo a data de retirada
+                chave.setUsuario(usuario);
                 chaveRepository.save(chave);
 
-                if (usuario.getChaves() == null) {
-                    usuario.setChaves(new ArrayList<>());
-                }
+                MovimentacaoChave movimentacao = new MovimentacaoChave();
+                movimentacao.setUsuarioId(usuario.getId());
+                movimentacao.setUsuarioNome(usuario.getNome());
+                movimentacao.setChaveId(chave.getId());
+                movimentacao.setChaveNome(chave.getNome());
+                movimentacao.setDataRetirada(dataRetirada);
+                movimentacao.setDevolvida(false);
+                movimentacaoChaveRepository.save(movimentacao);
+
                 usuario.getChaves().add(chave);
                 usuarioRepository.save(usuario);
             }
         }
     }
+
 
     public void devolverChave(String usuarioId, String chaveId, LocalDateTime dataDevolucao) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
@@ -63,22 +75,22 @@ public class UsuarioService {
             Usuario usuario = usuarioOpt.get();
             Chave chave = chaveOpt.get();
 
-            logger.info("Usuário antes da devolução: " + usuario.getChaves());
-
-            // Remover a chave da lista do usuário usando o ID para comparar
             usuario.getChaves().removeIf(c -> c.getId().equals(chave.getId()));
-
-            // Atualizar a chave para estar disponível e definir a data de devolução
             chave.setDisponivel(true);
-            chave.setDataDevolucao(dataDevolucao); // Definir a data de devolução
 
-            logger.info("Usuário após a devolução: " + usuario.getChaves());
+            // Atualizar o log de movimentação
+            List<MovimentacaoChave> movimentacoes = movimentacaoChaveRepository.findByChaveId(chaveId);
+            for (MovimentacaoChave movimentacao : movimentacoes) {
+                if (!movimentacao.isDevolvida()) {
+                    movimentacao.setDataDevolucao(dataDevolucao);
+                    movimentacao.setDevolvida(true);
+                    movimentacaoChaveRepository.save(movimentacao);
+                    break;
+                }
+            }
 
-            // Salvar as alterações
             chaveRepository.save(chave);
             usuarioRepository.save(usuario);
-            logger.info("Chave devolvida com sucesso.");
         }
     }
-
 }
